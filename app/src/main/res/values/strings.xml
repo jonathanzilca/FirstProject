@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">First Project</string>
+
+    <string-array name="quick_answer_examples">
+        <item>Come in</item>
+        <item>Do not enter</item>
+        <item>Go away</item>
+        <item>I will come soon</item>
+        <item>Wait few seconds, please</item>
+    </string-array>
+</resources>

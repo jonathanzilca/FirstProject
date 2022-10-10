@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/quickAnswer1"
+        android:title="Come in"
+        />
+    <item
+        android:id="@+id/quickAnswer2"
+        android:title="Do not enter"/>
+    <item
+        android:id="@+id/quickAnswer3"
+        android:title="Go away"/>
+    <item
+        android:id="@+id/quickAnswer4"
+        android:title="Wait outside"/>
+    <item
+        android:id="@+id/quickAnswer5"
+        android:title="I will come back soon"/>
+
+
+</menu>

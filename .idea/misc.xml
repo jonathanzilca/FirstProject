@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/answer_button.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/answer_icon_24.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/better_answer_icon.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/black_circle.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/call_option_icon.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/custom_output.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/displayed_answers.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/ic_baseline_volume_up_24.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/ignore_button.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/ignore_icon.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/send.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/sending.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/drawable/splash_screen.xml" value="0.2985" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-land/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-land/splash_screen.xml" value="0.31040564373897706" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-large/activity_main.xml" value="0.27049180327868855" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-normal/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-small/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout-xlarge/activity_main.xml" value="0.27049180327868855" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/activity_home.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/answer_displayed.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/shown_quick_answers.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/splash_screen.xml" value="0.5" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/layout/write_and_send.xml" value="0.358695652173913" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/menu/popmenu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.196" />
+        <entry key="..\:/Users/yonat/AndroidStudioProjects/FirstProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.196" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
