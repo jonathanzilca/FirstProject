@@ -27,6 +27,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Locale;
 
+
+//testing
 public class MainActivity extends AppCompatActivity {
     Button answer,ignore;
     FloatingActionButton option1,option2,option3,voice;
