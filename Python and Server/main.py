@@ -8,10 +8,13 @@ BUFF_SIZE = 65536
 WIDTH = 356
 HEIGHT = 620
 
+hostname = socket.gethostname()
+IPAddr = socket.gethostbyname(hostname)
+
 
 def GetMsg():
     print("Getting messages")
-    socket_address = ("192.168.1.204", 4381)
+    socket_address = (IPAddr, 4381)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind(socket_address)
     while True:
@@ -23,7 +26,7 @@ def GetMsg():
             print(data)
 
 def SendVideo():
-    socket_address = ("192.168.1.204", 4382)
+    socket_address = (IPAddr, 4382)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
     server_socket.settimeout(0.001)
@@ -66,6 +69,9 @@ def SendVideo():
                 break
 
 
+
+print("Your Computer Name is:"+hostname)
+print("Your Computer IP Address is:"+IPAddr)
 threading.Thread(target=SendVideo).start()
 threading.Thread(target=GetMsg).start()
 

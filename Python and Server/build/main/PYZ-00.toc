@@ -99,17 +99,25 @@
    'C:\\Program Files (x86)\\Microsoft Visual '
    'Studio\\Shared\\Python37_64\\lib\\_compression.py',
    'PYMODULE'),
-  ('_py_abc',
-   'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\_py_abc.py',
-   'PYMODULE'),
-  ('string',
-   'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\string.py',
-   'PYMODULE'),
   ('typing',
    'C:\\Program Files (x86)\\Microsoft Visual '
    'Studio\\Shared\\Python37_64\\lib\\typing.py',
+   'PYMODULE'),
+  ('tracemalloc',
+   'C:\\Program Files (x86)\\Microsoft Visual '
+   'Studio\\Shared\\Python37_64\\lib\\tracemalloc.py',
+   'PYMODULE'),
+  ('pickle',
+   'C:\\Program Files (x86)\\Microsoft Visual '
+   'Studio\\Shared\\Python37_64\\lib\\pickle.py',
+   'PYMODULE'),
+  ('pprint',
+   'C:\\Program Files (x86)\\Microsoft Visual '
+   'Studio\\Shared\\Python37_64\\lib\\pprint.py',
+   'PYMODULE'),
+  ('_compat_pickle',
+   'C:\\Program Files (x86)\\Microsoft Visual '
+   'Studio\\Shared\\Python37_64\\lib\\_compat_pickle.py',
    'PYMODULE'),
   ('tempfile',
    'C:\\Program Files (x86)\\Microsoft Visual '
@@ -131,17 +139,9 @@
    'C:\\Program Files (x86)\\Microsoft Visual '
    'Studio\\Shared\\Python37_64\\lib\\logging\\__init__.py',
    'PYMODULE'),
-  ('pickle',
+  ('string',
    'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\pickle.py',
-   'PYMODULE'),
-  ('pprint',
-   'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\pprint.py',
-   'PYMODULE'),
-  ('_compat_pickle',
-   'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\_compat_pickle.py',
+   'Studio\\Shared\\Python37_64\\lib\\string.py',
    'PYMODULE'),
   ('shutil',
    'C:\\Program Files (x86)\\Microsoft Visual '
@@ -307,9 +307,9 @@
    'C:\\Program Files (x86)\\Microsoft Visual '
    'Studio\\Shared\\Python37_64\\lib\\email\\__init__.py',
    'PYMODULE'),
-  ('tracemalloc',
+  ('_py_abc',
    'C:\\Program Files (x86)\\Microsoft Visual '
-   'Studio\\Shared\\Python37_64\\lib\\tracemalloc.py',
+   'Studio\\Shared\\Python37_64\\lib\\_py_abc.py',
    'PYMODULE'),
   ('numpy',
    'd:\\projects\\jona\\firstproject\\python and '
