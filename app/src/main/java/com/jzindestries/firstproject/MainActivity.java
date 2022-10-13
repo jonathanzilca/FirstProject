@@ -30,24 +30,26 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Button answer,ignore;
+    Button answer,ignore, setting;
     FloatingActionButton option1,option2,option3,voice;
     Animation scaleUp,scaleDown, fabOpen, fabClose, rotateForward, rotateBackward, voiceAppear, voiceDisappear;
     MenuBuilder menuBuilder;
     ImageView liveStream;
 
-    private final String SERVER_ADDRESS = "192.168.1.170"; // make sure this matches whatever the server tells you
+    private static String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
     public static final int BUFFER_SIZE = 65536;
     public boolean answered = true;
     private Bitmap bm;
     private Thread socketThread;
     private Handler handler;
-
+    DatagramSocket ds;
 
     boolean isOpen = false;
     boolean isOn = false;
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         option1 = findViewById(R.id.option1);
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
+        setting = findViewById(R.id.setting);
         voice = findViewById(R.id.voice);
         liveStream = findViewById(R.id.liveStream);
 
@@ -130,7 +133,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MainActivity.this.finish();
+
+                new Thread(closeSocket).start();
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 System.exit(0);
+            }
+        });
+
+        setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // opening writing window
+                ServerIP ServerIP = new ServerIP();
+                ServerIP.showServerIP(MainActivity.this);
             }
         });
 
@@ -216,10 +235,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected Bitmap GetVideo(String msg ){
-        return bm;
-    }
-
     private  Runnable vidUpdate  = new Runnable() {
         @Override
         public void run() {
@@ -229,14 +244,33 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private Runnable closeSocket = new Runnable() {
+        @Override
+        public void run() {
+            try {
+//                DatagramSocket ds = new DatagramSocket();
+                InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);
+                byte[] b = "close".getBytes(StandardCharsets.UTF_8);
+                DatagramPacket dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                ds.send(dp);
+                System.out.println("closed");
+            } catch (SocketException e) {
+                e.printStackTrace();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
 
     private Runnable socketRun = new Runnable() {
         @Override
         public void run() {
-            // configure client socket
+            // configure client socket;
             try {
-                DatagramSocket ds = new DatagramSocket();
+                ds = new DatagramSocket();
                 byte[] b = "Hello".getBytes(StandardCharsets.UTF_8);
 
                 InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);

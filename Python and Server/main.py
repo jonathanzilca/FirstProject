@@ -40,33 +40,35 @@ def SendVideo():
     vidwidth = len(frame)
     # fps
     test = 0
-    while True:
+    clients = []
+
+    while vid.isOpened():
         try:
             msg, client_address = server_socket.recvfrom(BUFF_SIZE)
+            if msg == 'close':
+                clients.pop(client_address)
+            else:
+                print('Got connection:' + str(client_address))
+                print("Message from client:" + msg.decode())
+                clients.append(client_address)
         except:
-            continue
-        print('Got connection:' + str(client_address))
-        print("Message from client:" + msg.decode())
-        while vid.isOpened():
-            _, frame = vid.read()
-            frame = frame[round(vidheight/2 - HEIGHT/2):round(vidheight/2 + HEIGHT/2),
-                    round(vidwidth/2 - WIDTH/2):round(vidwidth/2 + WIDTH/2)]
-            encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, 90])
-            message = base64.b64encode(buffer)
-            test = max(test, len(message))
-            cv.imshow('TRANSMITTING', frame)
-            server_socket.sendto(message, client_address)
-            try:
-                msg, client_address = server_socket.recvfrom(BUFF_SIZE)
-                if len(msg.decode()) > 0:
-                    cv.destroyAllWindows
-                    break
-            except:
-                pass
-            key = cv.waitKey(1) & 0xFF
-            if key == ord('q'):
-                cv.destroyAllWindows
-                break
+            if len(clients) == 0:
+                continue
+
+        # while vid.isOpened():
+        _, frame = vid.read()
+        frame = frame[round(vidheight/2 - HEIGHT/2):round(vidheight/2 + HEIGHT/2),
+                round(vidwidth/2 - WIDTH/2):round(vidwidth/2 + WIDTH/2)]
+        encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, 90])
+        message = base64.b64encode(buffer)
+        test = max(test, len(message))
+        cv.imshow('TRANSMITTING', frame)
+        for client in clients:
+            server_socket.sendto(message, client)
+        key = cv.waitKey(1) & 0xFF
+        if key == ord('q'):
+            cv.destroyAllWindows
+            break
 
 
 
