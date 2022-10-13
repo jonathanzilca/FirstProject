@@ -4,12 +4,9 @@ import cv2 as cv
 import base64,time, threading
 import numpy as np
 
-img = open("image/image0.png", 'rb')
-msg = img.read()
-img.close()
 BUFF_SIZE = 65536
 WIDTH = 356
-HEIGHT = 600
+HEIGHT = 620
 
 
 def GetMsg():
@@ -49,7 +46,6 @@ def SendVideo():
         print("Message from client:" + msg.decode())
         while vid.isOpened():
             _, frame = vid.read()
-            cv.imshow("test",frame)
             frame = frame[round(vidheight/2 - HEIGHT/2):round(vidheight/2 + HEIGHT/2),
                     round(vidwidth/2 - WIDTH/2):round(vidwidth/2 + WIDTH/2)]
             encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, 90])
