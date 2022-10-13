@@ -20,7 +20,7 @@
         android:textStyle="bold"
         android:layout_marginRight="-2dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/videoView"
+        app:layout_constraintEnd_toEndOf="@+id/liveStream"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,8 +41,8 @@
         app:layout_constraintTop_toTopOf="@+id/ignore"
         app:layout_constraintVertical_bias="1.0" />
 
-    <VideoView
-        android:id="@+id/videoView"
+    <ImageView
+        android:id="@+id/liveStream"
         android:layout_width="355dp"
         android:layout_height="527dp"
         app:layout_constraintBottom_toTopOf="@+id/answer"
@@ -59,10 +59,10 @@
         android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/videoView"
-        app:layout_constraintEnd_toEndOf="@+id/videoView"
+        app:layout_constraintBottom_toTopOf="@+id/liveStream"
+        app:layout_constraintEnd_toEndOf="@+id/liveStream"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/videoView"
+        app:layout_constraintStart_toStartOf="@+id/liveStream"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.406" />
 
@@ -111,8 +111,8 @@
         android:visibility="invisible"
         app:backgroundTint="#00FFFFFF"
         app:fabSize="auto"
-        app:layout_constraintEnd_toEndOf="@+id/videoView"
-        app:layout_constraintTop_toTopOf="@+id/videoView" />
+        app:layout_constraintEnd_toEndOf="@+id/liveStream"
+        app:layout_constraintTop_toTopOf="@+id/liveStream" />
 
     <TextView
         android:id="@+id/textView2"

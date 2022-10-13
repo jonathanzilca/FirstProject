@@ -18,8 +18,8 @@
         android:text="Ignore"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/videoView"
-        app:layout_constraintEnd_toStartOf="@+id/videoView"
+        app:layout_constraintBottom_toBottomOf="@+id/liveStream"
+        app:layout_constraintEnd_toStartOf="@+id/liveStream"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -40,8 +40,8 @@
         app:layout_constraintTop_toTopOf="@+id/ignore"
         app:layout_constraintVertical_bias="0.0" />
 
-    <VideoView
-        android:id="@+id/videoView"
+    <ImageView
+        android:id="@+id/liveStream"
         android:layout_width="270dp"
         android:layout_height="312dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,7 +60,7 @@
         android:textColor="@color/black"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/videoView"
+        app:layout_constraintEnd_toStartOf="@+id/liveStream"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

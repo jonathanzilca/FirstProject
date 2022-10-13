@@ -1,40 +1,53 @@
 package com.jzindestries.firstproject;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.core.graphics.drawable.DrawableCompat;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.speech.tts.Voice;
+import android.util.Base64;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuPopupHelper;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
-
-//testing
 public class MainActivity extends AppCompatActivity {
     Button answer,ignore;
     FloatingActionButton option1,option2,option3,voice;
     Animation scaleUp,scaleDown, fabOpen, fabClose, rotateForward, rotateBackward, voiceAppear, voiceDisappear;
     MenuBuilder menuBuilder;
-    VideoView video;
+    ImageView liveStream;
+
+    private final String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
+    private final int SERVER_PORT = 4382;
+    public static final int BUFFER_SIZE = 65536;
+    public boolean answered = true;
+    private Bitmap bm;
+    private Thread socketThread;
+    private Handler handler;
+
 
     boolean isOpen = false;
     boolean isOn = false;
@@ -42,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "MissingInflatedId"})
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -59,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
         option2 = findViewById(R.id.option2);
         option3 = findViewById(R.id.option3);
         voice = findViewById(R.id.voice);
-        video = findViewById(R.id.videoView);
+        liveStream = findViewById(R.id.liveStream);
+
 
         // animations
         scaleUp = AnimationUtils.loadAnimation(this,R.anim.scale_up);
@@ -80,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 //            manager.createNotificationChannel(channel);
 //        }
 
-        video.setOnClickListener(new View.OnClickListener() {
+        liveStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(VOn){
@@ -89,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // establish connection between server and app
+        socketThread = new Thread(socketRun);
+        socketThread.start();
+        handler = new Handler();
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         ignore.setOnClickListener(new View.OnClickListener() {
@@ -164,12 +181,23 @@ public class MainActivity extends AppCompatActivity {
                 menuBuilder.setCallback(new MenuBuilder.Callback() {
                     @Override
                     public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+                        SocketForVideo socketForVideo = new SocketForVideo();
+                        Toast.makeText(MainActivity.this, "Quick message sent!", Toast.LENGTH_SHORT).show();
                         switch (item.getItemId()){
                             case R.id.quickAnswer1:
+                                socketForVideo.sendMessage("Come in");
+                                return true;
                             case R.id.quickAnswer2:
+                                socketForVideo.sendMessage("Do not enter");
+                                return true;
+                            case R.id.quickAnswer3:
+                                socketForVideo.sendMessage("Go away");
+                                return true;
                             case R.id.quickAnswer4:
+                                socketForVideo.sendMessage("Wait outside");
+                                return true;
                             case R.id.quickAnswer5:
-                                Toast.makeText(MainActivity.this, "Quick message sent!", Toast.LENGTH_SHORT).show();
+                                socketForVideo.sendMessage("I will come back soon");
                                 return true;
                             default:
                                 return false;
@@ -182,12 +210,56 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 optionMenu.show();
-
             }
         });
 
 
     }
+
+    protected Bitmap GetVideo(String msg ){
+        return bm;
+    }
+
+    private  Runnable vidUpdate  = new Runnable() {
+        @Override
+        public void run() {
+            if(bm != null){
+                liveStream.setImageBitmap(bm);
+            }
+        }
+    };
+
+
+
+    private Runnable socketRun = new Runnable() {
+        @Override
+        public void run() {
+            // configure client socket
+            try {
+                DatagramSocket ds = new DatagramSocket();
+                byte[] b = "Hello".getBytes(StandardCharsets.UTF_8);
+
+                InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);
+                DatagramPacket dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                ds.send(dp);
+                while (answered){
+                    byte[] b1 = new byte[BUFFER_SIZE];
+                    DatagramPacket dp1 = new DatagramPacket(b1, b1.length);
+                    ds.receive(dp1);
+
+                    byte[] data = dp1.getData();
+                    String text = new String(data, StandardCharsets.UTF_8);
+
+                    byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
+                    bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                    handler.post(vidUpdate);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     private void animateFab(){
         if(isOpen){
