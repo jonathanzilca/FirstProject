@@ -11,7 +11,7 @@ public class SocketForVideo {
 
 
     // server settings
-    private final String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
+    private final String SERVER_ADDRESS = "192.168.1.170"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4381;
     private String msg = "";
 
