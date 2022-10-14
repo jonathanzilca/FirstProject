@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
-    public static final int BUFFER_SIZE = 65536;
+    public static final int BUFFER_SIZE = 65000;
     public boolean answered = true;
     private Bitmap bm;
     private Thread socketThread;
@@ -106,10 +106,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // establish connection between server and app
-        socketThread = new Thread(socketRun);
-        socketThread.start();
-        handler = new Handler();
+
 
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -289,31 +286,26 @@ public class MainActivity extends AppCompatActivity {
                         byte[] data = dp1.getData();
                         String text = new String(data, StandardCharsets.UTF_8);
 
+
+
+                        if(dp1.getLength() == BUFFER_SIZE){
+                            ds.receive(dp1);
+                            byte[] tempdata1 = data;
+                            byte[] tempdata2 = dp1.getData();
+                            data = new byte[BUFFER_SIZE + dp1.getLength()];
+                            System.arraycopy(tempdata1,0,data,0,BUFFER_SIZE);
+                            System.arraycopy(tempdata2,0,data,BUFFER_SIZE,dp1.getLength());
+                        }
+
                         byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
                         bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
                         handler.post(vidUpdate);
 
-//                        ds.receive(dp1);
-//
-//                        byte[] data = dp1.getData();
-//                        if(dp1.getLength() == BUFFER_SIZE){
-//                            ds.receive(dp1);
-//                            byte[] tempdata1 = data;
-//                            byte[] tempdata2 = dp1.getData();
-//                            data = new byte[BUFFER_SIZE + dp1.getLength()];
-//                            System.arraycopy(tempdata1,0,data,0,BUFFER_SIZE);
-//                            System.arraycopy(tempdata2,0,data,BUFFER_SIZE,dp1.getLength());
-//                        }
-//                        byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
-//                        bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//
-//                        handler.post(vidUpdate);
                         c =0;
                     }
                     catch (IOException e) {
                         c++;
-                        if(c > 100){
+                        if(c > 50){
                             break;
                         }
                         e.printStackTrace();
@@ -337,6 +329,47 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("Destroy");
+        answered = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        System.out.println("Pause");
+        answered = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        System.out.println("Stop");
+        answered = false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("Resume");
+
+//        if(answered == false){
+//            try {
+//                socketThread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        answered = true;
+        // establish connection between server and app
+        socketThread = new Thread(socketRun);
+//        socketThread.start();
+        handler = new Handler();
+        socketThread.start();
+    }
 
     private void animateFab(){
         if(isOpen){

@@ -4,7 +4,7 @@ import cv2 as cv
 import numpy as np
 socket_address = ("192.168.1.204", 4382)
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-BUFF_SIZE = 65536
+BUFF_SIZE = 65000
 
 print("Starting")
 s.sendto(b"Hello", socket_address)

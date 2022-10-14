@@ -4,7 +4,7 @@ import cv2 as cv
 import base64,time, threading
 import numpy as np
 
-BUFF_SIZE = 65536
+BUFF_SIZE = 65000
 WIDTH = 380
 HEIGHT = 640
 
@@ -28,7 +28,7 @@ def GetMsg():
 def SendVideo():
     socket_address = (IPAddr, 4382)
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    # server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFF_SIZE)
+    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFF_SIZE)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
     server_socket.settimeout(0.001)
     host_name = socket.gethostname()
@@ -50,11 +50,12 @@ def SendVideo():
         try:
             msg, client_address = server_socket.recvfrom(BUFF_SIZE)
             if msg.decode() == "close":
-                try:
-                    i = clients.index(client_address)
-                    clients.pop(i)
-                    print('popped ' + client_address)
-                except:
+                for client in clients:
+                    if client[0] == client_address[0] and client[1] == client_address[1]:
+                        clients.remove(client)
+                        print('popped ' + client_address)
+                        break
+                else:
                     print(f'received close from unconnected client({client_address})')
             else:
                 print('Got connection:' + str(client_address))
@@ -62,6 +63,11 @@ def SendVideo():
                 clients.append(client_address)
                 print(clients)
         except:
+            key = cv.waitKey(1) & 0xFF
+            if key == ord('q'):
+                cv.destroyAllWindows
+                server_socket.close()
+                break
             if len(clients) == 0:
                 continue
 
@@ -69,23 +75,22 @@ def SendVideo():
         _, frame = vid.read()
         frame = frame[round(vidheight/2 - HEIGHT/2):round(vidheight/2 + HEIGHT/2),
                 round(vidwidth/2 - WIDTH/2):round(vidwidth/2 + WIDTH/2)]
-        encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, 90])
+        qu = 90
+        encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, qu])
+        while len(buffer) > 0.74 * BUFF_SIZE and qu > 0:
+            qu -= 5
+            encode, buffer = cv.imencode('.jpg', frame, [cv.IMWRITE_JPEG_QUALITY, qu])
+        if qu == 0:
+            continue
         message = base64.b64encode(buffer)
-        if len(message) > test:
-            test = max(test, len(message))
-            print(test)
+        # print(f"buffer: {len(buffer)}, message: {len(message)}, ratio:{len(buffer)/len(message)}")
+        # if len(message) > test:
+        #     test = max(test, len(message))
+        #     print(test)
         cv.imshow('TRANSMITTING', frame)
-        # messages = [message[:BUFF_SIZE]]
-        # if len(message) > BUFF_SIZE:
-        #     messages.append(message[BUFF_SIZE:])
         for client in clients:
-            # for msg in messages:
             server_socket.sendto(message, client)
-        key = cv.waitKey(1) & 0xFF
-        if key == ord('q'):
-            cv.destroyAllWindows
-            server_socket.close()
-            break
+
 
 
 
