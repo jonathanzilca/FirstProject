@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
-    public static final int BUFFER_SIZE = 65536;
+    public static final int BUFFER_SIZE = 65507;
     public boolean answered = true;
     private Bitmap bm;
     private Thread socketThread;
@@ -133,13 +133,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MainActivity.this.finish();
-
-                new Thread(closeSocket).start();
+                answered = false;
+//                new Thread(closeSocket).start();
                 try {
-                    Thread.sleep(10);
+                    socketThread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+//                answered = true;
                 System.exit(0);
             }
         });
@@ -276,22 +277,70 @@ public class MainActivity extends AppCompatActivity {
                 InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);
                 DatagramPacket dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
                 ds.send(dp);
+                ds.setSoTimeout(100);
+                int c = 0;
                 while (answered){
                     byte[] b1 = new byte[BUFFER_SIZE];
                     DatagramPacket dp1 = new DatagramPacket(b1, b1.length);
-                    ds.receive(dp1);
 
-                    byte[] data = dp1.getData();
-                    String text = new String(data, StandardCharsets.UTF_8);
+                    try{
+                        ds.receive(dp1);
 
-                    byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
-                    bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        byte[] data = dp1.getData();
+                        String text = new String(data, StandardCharsets.UTF_8);
 
-                    handler.post(vidUpdate);
+                        byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
+                        bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        handler.post(vidUpdate);
+
+//                        ds.receive(dp1);
+//
+//                        byte[] data = dp1.getData();
+//                        if(dp1.getLength() == BUFFER_SIZE){
+//                            ds.receive(dp1);
+//                            byte[] tempdata1 = data;
+//                            byte[] tempdata2 = dp1.getData();
+//                            data = new byte[BUFFER_SIZE + dp1.getLength()];
+//                            System.arraycopy(tempdata1,0,data,0,BUFFER_SIZE);
+//                            System.arraycopy(tempdata2,0,data,BUFFER_SIZE,dp1.getLength());
+//                        }
+//                        byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
+//                        bm = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//
+//                        handler.post(vidUpdate);
+                        c =0;
+                    }
+                    catch (IOException e) {
+                        c++;
+                        if(c > 100){
+                            break;
+                        }
+                        e.printStackTrace();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                 }
+                b = "close".getBytes(StandardCharsets.UTF_8);
+
+                ia = InetAddress.getByName(SERVER_ADDRESS);
+                dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                ds.send(dp);
+
+                System.out.println("1");
+                byte[] b1 = new byte[BUFFER_SIZE];
+                DatagramPacket dp1 = new DatagramPacket(b1, b1.length);
+                ds.receive(dp1);
+                System.out.println("2");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     };
 
