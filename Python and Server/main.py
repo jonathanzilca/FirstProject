@@ -4,7 +4,7 @@ import cv2 as cv
 import base64,time, threading
 import numpy as np
 
-BUFF_SIZE = 65507
+BUFF_SIZE = 65536
 WIDTH = 380
 HEIGHT = 640
 
@@ -80,7 +80,7 @@ def SendVideo():
         #     messages.append(message[BUFF_SIZE:])
         for client in clients:
             # for msg in messages:
-            server_socket.sendto(msg, client)
+            server_socket.sendto(message, client)
         key = cv.waitKey(1) & 0xFF
         if key == ord('q'):
             cv.destroyAllWindows

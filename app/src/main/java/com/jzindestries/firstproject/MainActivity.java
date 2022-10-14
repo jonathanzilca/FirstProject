@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
-    public static final int BUFFER_SIZE = 65507;
+    public static final int BUFFER_SIZE = 65536;
     public boolean answered = true;
     private Bitmap bm;
     private Thread socketThread;
@@ -327,12 +327,6 @@ public class MainActivity extends AppCompatActivity {
                 ia = InetAddress.getByName(SERVER_ADDRESS);
                 dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
                 ds.send(dp);
-
-                System.out.println("1");
-                byte[] b1 = new byte[BUFFER_SIZE];
-                DatagramPacket dp1 = new DatagramPacket(b1, b1.length);
-                ds.receive(dp1);
-                System.out.println("2");
 
             } catch (IOException e) {
                 e.printStackTrace();
