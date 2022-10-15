@@ -117,5 +117,17 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/setting"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_margin="5.8dp"
+        android:drawableTop="@drawable/ic_baseline_settings_24"
+        android:background="@drawable/settings_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
