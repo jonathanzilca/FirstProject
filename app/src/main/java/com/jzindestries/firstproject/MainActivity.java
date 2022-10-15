@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     MenuBuilder menuBuilder;
     ImageView liveStream;
 
-    private static String SERVER_ADDRESS = "192.168.1.204"; // make sure this matches whatever the server tells you
+    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
     public static final int BUFFER_SIZE = 65000;
     public boolean answered = true;

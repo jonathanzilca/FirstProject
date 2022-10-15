@@ -97,7 +97,7 @@ def SendVideo():
 print("Your Computer Name is:"+hostname)
 print("Your Computer IP Address is:"+IPAddr)
 threading.Thread(target=SendVideo).start()
-# threading.Thread(target=GetMsg).start()
+threading.Thread(target=GetMsg).start()
 
 
 
