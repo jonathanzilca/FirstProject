@@ -101,19 +101,20 @@
         app:layout_constraintBottom_toTopOf="@+id/answer"
         app:layout_constraintEnd_toStartOf="@+id/ignore" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    <Button
         android:id="@+id/voice"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="-3dp"
-        android:layout_marginEnd="10dp"
-        android:foregroundGravity="center"
-        android:src="@drawable/ic_baseline_volume_up_24"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="7dp"
+        android:drawableTop="@drawable/ic_baseline_volume_up_24"
+        android:paddingTop="3dp"
+        android:background="@drawable/black_circle"
         android:visibility="invisible"
-        app:backgroundTint="#00FFFFFF"
-        app:fabSize="auto"
         app:layout_constraintEnd_toEndOf="@+id/liveStream"
         app:layout_constraintTop_toTopOf="@+id/liveStream" />
+
 
     <TextView
         android:id="@+id/textView2"

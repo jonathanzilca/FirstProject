@@ -36,13 +36,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Button answer,ignore, setting;
-    FloatingActionButton option1,option2,option3,voice;
+    Button answer,ignore, setting,voice;
+    FloatingActionButton option1,option2,option3;
     Animation scaleUp,scaleDown, fabOpen, fabClose, rotateForward, rotateBackward, voiceAppear, voiceDisappear;
     MenuBuilder menuBuilder;
     ImageView liveStream;
 
-    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
+    private static String SERVER_ADDRESS = "10.0.0.10"; // make sure this matches whatever the server tells you
     private final int SERVER_PORT = 4382;
     public static final int BUFFER_SIZE = 65000;
     public boolean answered = true;
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isOpen = false;
     boolean isOn = false;
-    boolean VOn = false;
+    boolean VOn = true;
 
 
 
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         configuration.setLayoutDirection(new Locale("en"));
 
 
-
+// setting items from xml layout
         answer = findViewById(R.id.answer);
         ignore = findViewById(R.id.ignore);
         option1 = findViewById(R.id.option1);
@@ -95,19 +95,25 @@ public class MainActivity extends AppCompatActivity {
 //            NotificationManager manager = getSystemService(NotificationManager.class);
 //            manager.createNotificationChannel(channel);
 //        }
-
+        // setting on ot off volume of live streaming
         liveStream.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(VOn){
+                    voice.setBackgroundResource(R.drawable.ic_baseline_volume_up_24);
+                    voice.startAnimation(voiceDisappear);
+                    VOn = false;
+                }else{
+                    voice.setBackgroundResource(R.drawable.volume_off);
+                    voice.startAnimation(voiceDisappear);
+                    VOn = true;}
 
-                }else{voice.startAnimation(voiceDisappear);}
 
             }
         });
 
 
-
+        // open 3 options for connection
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,10 +131,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        // getting out of app
         ignore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 MainActivity.this.finish();
                 answered = false;
 //                new Thread(closeSocket).start();
@@ -142,31 +149,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // opening ip setting window
         setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // opening writing window
                 ServerIP ServerIP = new ServerIP();
                 ServerIP.showServerIP(MainActivity.this);
             }
         });
 
-
+        // opening writing window
         option1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // opening writing window
                 WriteAndSend WriteAndSend = new WriteAndSend();
                 WriteAndSend.showWriteAndSend(MainActivity.this);
             }
         });
 
+        // changing call color and animation
         option2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(isOn){
                 option2.startAnimation(rotateBackward);
-                //  changing color
                 Drawable buttonDrawable = option2.getBackground();
                 buttonDrawable = DrawableCompat.wrap(buttonDrawable);
                 DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.blue));
@@ -174,10 +181,8 @@ public class MainActivity extends AppCompatActivity {
                 isOn = false;
                 } else{
                     option2.startAnimation(rotateForward);
-                    //  changing color
                     Drawable buttonDrawable = option2.getBackground();
                     buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                    //the color is a direct color int and not a color resource
                     DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.green));
                     option2.setBackground(buttonDrawable);
                     Toast.makeText(MainActivity.this, "Call has started!", Toast.LENGTH_SHORT).show();
@@ -186,10 +191,10 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+        // quick pop up menu answers
         menuBuilder = new MenuBuilder(this);
         MenuInflater inflater =  new MenuInflater(this);
         inflater.inflate(R.menu.popmenu, menuBuilder);
-
         option3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -371,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
         socketThread.start();
     }
 
+    // animation of connection options
     private void animateFab(){
         if(isOpen){
             option1.startAnimation(fabClose);
