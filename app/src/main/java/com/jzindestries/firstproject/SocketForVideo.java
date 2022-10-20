@@ -11,8 +11,8 @@ public class SocketForVideo {
 
 
     // server settings
-    private static String SERVER_ADDRESS = "10.0.0.10"; // make sure this matches whatever the server tells you
-    private final int SERVER_PORT = 4381;
+    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
+    private final int MSG_PORT = 4381;
     private String msg = "";
 
 
@@ -22,19 +22,19 @@ public class SocketForVideo {
 
     protected void sendMessage(String msg) {
         this.msg = msg;
-        new Thread(socketThread).start();
+        new Thread(socketRun).start();
     }
 
     public static void Change_Ip(String ip){
         SERVER_ADDRESS = ip;
     }
 
-    private Runnable socketThread = new Runnable() {
+    private Runnable socketRun = new Runnable() {
         @Override
         public void run() {
             // configure client socket
             try {
-                clientSocket = new Socket(InetAddress.getByName(SERVER_ADDRESS), SERVER_PORT);
+                clientSocket = new Socket(InetAddress.getByName(SERVER_ADDRESS), MSG_PORT);
                 outS = clientSocket.getOutputStream();
                 // grab output stream of client socket
                 byte[] packet = msg.getBytes(StandardCharsets.UTF_8);

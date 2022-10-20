@@ -3,6 +3,7 @@ import socket
 import cv2 as cv
 import base64,time, threading
 import numpy as np
+import pyttsx3
 
 BUFF_SIZE = 65000
 WIDTH = 380
@@ -10,6 +11,11 @@ HEIGHT = 640
 
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname)
+
+def robot_talk(text):
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
 
 
 def GetMsg():
@@ -24,6 +30,7 @@ def GetMsg():
         data = connection.recv(4096).decode()
         if data != "":
             print(data)
+            robot_talk(data)
 
 def SendVideo():
     socket_address = (IPAddr, 4382)
@@ -31,7 +38,6 @@ def SendVideo():
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFF_SIZE)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, BUFF_SIZE)
     server_socket.settimeout(0.001)
-    host_name = socket.gethostname()
     try:
         server_socket.recvfrom(BUFF_SIZE)
     except:

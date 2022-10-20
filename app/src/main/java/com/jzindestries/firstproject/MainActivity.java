@@ -1,6 +1,8 @@
 package com.jzindestries.firstproject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +34,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
@@ -42,19 +45,22 @@ public class MainActivity extends AppCompatActivity {
     MenuBuilder menuBuilder;
     ImageView liveStream;
 
-    private static String SERVER_ADDRESS = "10.0.0.10"; // make sure this matches whatever the server tells you
-    private final int SERVER_PORT = 4382;
+    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
+    private static final int VIDEO_PORT = 4382;
     public static final int BUFFER_SIZE = 65000;
     public boolean answered = true;
     private Bitmap bm;
     private Thread socketThread;
     private Handler handler;
-    DatagramSocket ds;
+    private DatagramSocket ds;
+    private String msg = "";
+    private static SharedPreferences.Editor editor;
+    private static MainActivity App;
+
 
     boolean isOpen = false;
     boolean isOn = false;
     boolean VOn = true;
-
 
 
     @SuppressLint({"RestrictedApi", "MissingInflatedId"})
@@ -64,8 +70,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#000000"));
         Configuration configuration = getResources().getConfiguration();
         configuration.setLayoutDirection(new Locale("en"));
-
-
+        SharedPreferences sp = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String IP = sp.getString("ServerIP", "");
+        if (IP.length() > 0 && Charset.forName("US-ASCII").newEncoder().canEncode(IP)) {
+            SERVER_ADDRESS = IP;
+            SocketForVideo.Change_Ip(IP);
+        }
+        editor = sp.edit();
+        editor.clear();
+        editor.commit();
+        App = MainActivity.this;
+        
 // setting items from xml layout
         answer = findViewById(R.id.answer);
         ignore = findViewById(R.id.ignore);
@@ -75,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         setting = findViewById(R.id.setting);
         voice = findViewById(R.id.voice);
         liveStream = findViewById(R.id.liveStream);
-
 
         // animations
         scaleUp = AnimationUtils.loadAnimation(this,R.anim.scale_up);
@@ -107,8 +121,6 @@ public class MainActivity extends AppCompatActivity {
                     voice.setBackgroundResource(R.drawable.volume_off);
                     voice.startAnimation(voiceDisappear);
                     VOn = true;}
-
-
             }
         });
 
@@ -130,22 +142,11 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         // getting out of app
         ignore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                MainActivity.this.finish();
-                answered = false;
-//                new Thread(closeSocket).start();
-                try {
-                    socketThread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-//                answered = true;
-                System.exit(0);
+                closeApp();
             }
         });
 
@@ -237,8 +238,30 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    
+    public void closeApp(){
+        MainActivity.this.finish();
+        answered = false;
+        try {
+            socketThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        MainActivity.this.finish();
+        MainActivity.this.startActivity(MainActivity.this.getIntent());
+    }
 
-    private  Runnable vidUpdate  = new Runnable() {
+    public static void changeIP(String IP){
+        if (IP.length() > 0 && Charset.forName("US-ASCII").newEncoder().canEncode(IP)) {
+            System.out.println(IP);
+            editor.putString("ServerIP", IP);
+            editor.commit();
+        }
+        App.closeApp();
+    }
+
+
+    private Runnable vidUpdate  = new Runnable() {
         @Override
         public void run() {
             if(bm != null){
@@ -254,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 //                DatagramSocket ds = new DatagramSocket();
                 InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);
                 byte[] b = "close".getBytes(StandardCharsets.UTF_8);
-                DatagramPacket dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                DatagramPacket dp = new DatagramPacket(b, b.length,ia,VIDEO_PORT);
                 ds.send(dp);
                 System.out.println("closed");
             } catch (SocketException e) {
@@ -277,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                 byte[] b = "Hello".getBytes(StandardCharsets.UTF_8);
 
                 InetAddress ia = InetAddress.getByName(SERVER_ADDRESS);
-                DatagramPacket dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                DatagramPacket dp = new DatagramPacket(b, b.length,ia,VIDEO_PORT);
                 ds.send(dp);
                 ds.setSoTimeout(100);
                 int c = 0;
@@ -290,8 +313,6 @@ public class MainActivity extends AppCompatActivity {
 
                         byte[] data = dp1.getData();
                         String text = new String(data, StandardCharsets.UTF_8);
-
-
 
                         if(dp1.getLength() == BUFFER_SIZE){
                             ds.receive(dp1);
@@ -317,12 +338,11 @@ public class MainActivity extends AppCompatActivity {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
-
                 }
                 b = "close".getBytes(StandardCharsets.UTF_8);
 
                 ia = InetAddress.getByName(SERVER_ADDRESS);
-                dp = new DatagramPacket(b, b.length,ia,SERVER_PORT);
+                dp = new DatagramPacket(b, b.length,ia,VIDEO_PORT);
                 ds.send(dp);
 
             } catch (IOException e) {
@@ -360,18 +380,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("Resume");
-
-//        if(answered == false){
-//            try {
-//                socketThread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
         answered = true;
         // establish connection between server and app
         socketThread = new Thread(socketRun);
-//        socketThread.start();
         handler = new Handler();
         socketThread.start();
     }

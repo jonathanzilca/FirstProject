@@ -1,7 +1,10 @@
 package com.jzindestries.firstproject;
 
+
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -24,13 +27,12 @@ public class ServerIP {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String SERVER_ADDRESS = String.valueOf(IPAddress.getText());
+                MainActivity.changeIP(IPAddress.getText().toString());
                 Toast.makeText(activity, "IP updated!", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
 
-
-
-        dialog.show();}
+        dialog.show();
+    }
 }
