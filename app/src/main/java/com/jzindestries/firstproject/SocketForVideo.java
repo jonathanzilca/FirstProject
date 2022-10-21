@@ -11,7 +11,7 @@ public class SocketForVideo {
 
 
     // server settings
-    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
+    private static String SERVER_ADDRESS = "10.0.0.10"; // make sure this matches whatever the server tells you
     private final int MSG_PORT = 4381;
     private String msg = "";
 

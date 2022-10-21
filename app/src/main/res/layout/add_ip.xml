@@ -6,10 +6,10 @@
     android:layout_height="150dp">
 
     <Button
-        android:id="@+id/update"
+        android:id="@+id/adding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update IP"
+        android:text="add"
         android:textColor="@color/white"
         android:padding="5dp"
         android:layout_margin="10dp"
@@ -19,20 +19,19 @@
         android:background="@drawable/sending"/>
 
 
-    <TextView
-        android:id="@+id/ip_display"
+    <EditText
+        android:id="@+id/adding_ip"
         android:layout_width="160dp"
         android:layout_height="30dp"
         android:background="@drawable/custom_output"
         android:ems="10"
         android:focusable="true"
-        android:hint="Click here"
+        android:hint="192.168.XXX.XXX"
         android:gravity="center"
-        android:paddingLeft="6dp"
         android:textColor="@color/black"
         android:textSize="18dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/update"
+        app:layout_constraintBottom_toTopOf="@+id/adding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

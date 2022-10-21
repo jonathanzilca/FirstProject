@@ -51,6 +51,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.365" />
 
+    <Button
+        android:id="@+id/voice"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:drawableTop="@drawable/ic_baseline_volume_up_24"
+        android:paddingTop="3dp"
+        android:background="@drawable/black_circle"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/liveStream"
+        app:layout_constraintTop_toTopOf="@+id/liveStream" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -65,45 +78,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/option1"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="52dp"
-        android:paddingTop="10dp"
-        android:src="@drawable/write_icon"
+        android:paddingTop="15dp"
+        android:drawableTop="@drawable/write_icon"
         android:visibility="invisible"
-        app:backgroundTint="#1a73e8"
-        app:layout_constraintBottom_toTopOf="@+id/answer"
-        app:layout_constraintEnd_toEndOf="@+id/option3"
-        app:layout_constraintHorizontal_bias="0.482"
-        app:layout_constraintStart_toStartOf="@+id/option2" />
+        android:background="@drawable/button_options"
+        app:layout_constraintBottom_toTopOf="@+id/option3"
+        app:layout_constraintEnd_toEndOf="@+id/option2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/option2" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/option2"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/end_call"
+        android:drawableTop="@drawable/end_call"
         android:visibility="invisible"
-        app:backgroundTint="#1a73e8"
+        android:paddingTop="16dp"
+        android:background="@drawable/button_options"
         app:layout_constraintBottom_toTopOf="@+id/answer"
-        app:layout_constraintEnd_toEndOf="@+id/answer"
-        app:layout_constraintHorizontal_bias="0.24"
-        app:layout_constraintStart_toStartOf="@+id/answer" />
+        app:layout_constraintEnd_toStartOf="@+id/option3" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/option3"
         android:layout_width="55dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="4dp"
-        android:src="@drawable/message"
+        android:layout_marginEnd="40dp"
+        android:drawableTop="@drawable/message"
+        android:paddingTop="16dp"
         android:visibility="invisible"
-        app:backgroundTint="#1a73e8"
+        android:background="@drawable/button_options"
         app:layout_constraintBottom_toTopOf="@+id/answer"
-        app:layout_constraintEnd_toStartOf="@+id/ignore"
-        app:layout_constraintHorizontal_bias="0.744"
-        app:layout_constraintStart_toStartOf="@+id/answer" />
+        app:layout_constraintEnd_toStartOf="@+id/ignore" />
 
     <TextView
         android:id="@+id/textView2"
@@ -119,14 +128,14 @@
 
     <Button
         android:id="@+id/setting"
-        android:gravity="center"
-        android:paddingTop="5dp"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_margin="5.8dp"
-        android:drawableTop="@drawable/ic_baseline_settings_24"
         android:background="@drawable/settings_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableTop="@drawable/ic_baseline_settings_24"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

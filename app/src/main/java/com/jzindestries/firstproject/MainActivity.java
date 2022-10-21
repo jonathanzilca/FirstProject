@@ -39,13 +39,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Button answer,ignore, setting,voice;
-    FloatingActionButton option1,option2,option3;
+    Button answer,ignore, setting,voice, option1,option2,option3;
     Animation scaleUp,scaleDown, fabOpen, fabClose, rotateForward, rotateBackward, voiceAppear, voiceDisappear;
     MenuBuilder menuBuilder;
     ImageView liveStream;
 
-    private static String SERVER_ADDRESS = "androidcam.ddns.net"; // make sure this matches whatever the server tells you
+    private static String SERVER_ADDRESS = "10.0.0.10"; // make sure this matches whatever the server tells you
     private static final int VIDEO_PORT = 4382;
     public static final int BUFFER_SIZE = 65000;
     public boolean answered = true;
@@ -175,17 +174,13 @@ public class MainActivity extends AppCompatActivity {
 
                 if(isOn){
                 option2.startAnimation(rotateBackward);
-                Drawable buttonDrawable = option2.getBackground();
-                buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.blue));
-                option2.setBackground(buttonDrawable);
+                option2.setBackgroundResource(R.drawable.button_options);
+                option2.setPadding(0,50,0,0);
                 isOn = false;
                 } else{
                     option2.startAnimation(rotateForward);
-                    Drawable buttonDrawable = option2.getBackground();
-                    buttonDrawable = DrawableCompat.wrap(buttonDrawable);
-                    DrawableCompat.setTint(buttonDrawable, getResources().getColor(R.color.green));
-                    option2.setBackground(buttonDrawable);
+                    option2.setBackgroundResource(R.drawable.call_back);
+                    option2.setPadding(0,45,0,0);
                     Toast.makeText(MainActivity.this, "Call has started!", Toast.LENGTH_SHORT).show();
                     isOn = true;}
                 }
