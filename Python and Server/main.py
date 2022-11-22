@@ -4,6 +4,7 @@ import cv2 as cv
 import base64,time, threading
 import numpy as np
 import pyttsx3
+import face_detection
 
 BUFF_SIZE = 65000
 WIDTH = 380
@@ -31,6 +32,19 @@ def GetMsg():
         if data != "":
             print(data)
             robot_talk(data)
+
+def SendNotify():
+    socket_address = (IPAddr, 4383)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(socket_address)
+    while True:
+        s.listen(1)
+        connection, client_address = s.accept()
+        print("sending intrusion")
+        face_detection.faceRecognizer()
+        msg = face_detection.faceRecognizer() + "is approaching the door!"
+        connection.send(msg.encode())
+
 
 def SendVideo():
     socket_address = (IPAddr, 4382)
@@ -102,8 +116,7 @@ def SendVideo():
 
 print("Your Computer Name is:"+hostname)
 print("Your Computer IP Address is:"+IPAddr)
-threading.Thread(target=SendVideo).start()
+# threading.Thread(target=SendVideo).start()
 threading.Thread(target=GetMsg).start()
-
-
+threading.Thread(target=SendNotify).start()
 

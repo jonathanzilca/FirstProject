@@ -1,6 +1,7 @@
 # install cmake, dlib (19.18.0 version),face-recognition,numpy, opencv-python
 
 import os
+import time
 import cv2
 import numpy as np
 import face_recognition
@@ -27,8 +28,6 @@ def findEncoding(images):
 
 
 def faceRecognizer():
-    encodeListKnown = findEncoding(images)
-
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
     curName = ""
     name = "  "
@@ -45,27 +44,33 @@ def faceRecognizer():
 
             if matches[matchIndex]:
                 name = classNames[matchIndex]
-                # x1, y1, x2, y2 = faceLocation
-                # x1, y1, x2, y2 = x1 * 4, y1 * 4, x2 * 4, y2 * 4
-                # # cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2) # to create a square around the face
-                # cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 255, 255), cv2.FILLED)  # place to write the name
-                # cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1) # writing the name
+                x1, y1, x2, y2 = faceLocation
+                x1, y1, x2, y2 = x1 * 4, y1 * 4, x2 * 4, y2 * 4
+                cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2) # to create a square around the face
+                cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 255, 255), cv2.FILLED)  # place to write the name
+                cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1) # writing the name
                 the_most_right_match = min(face_accuracy)
                 if the_most_right_match > 0.55:
                     name = "Unknown"
-                    # cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2)
-                    # cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 255, 255), cv2.FILLED)
-                    # cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1)
-
+                    cv2.rectangle(img, (x1, y1), (x2, y2), (255, 255, 255), 2)
+                    cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (255, 255, 255), cv2.FILLED)
+                    cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 1)
             if curName is not name:
                 curName = name
             if curName == name:
                 return name
+        #cv2.imshow("cam", img)
 
-
-recognized_name = faceRecognizer()
-if "Jonathan" == recognized_name:
-    print("hey master")
-    print("your name is Jonathan Zilca and are 20 years old.")
-    print("These days you work as a soldier.")
-
+print("encoding...")
+encodeListKnown = findEncoding(images)
+print("done encoding")
+while True:
+    face =faceRecognizer()
+    print(face)
+    # if "yoav" == face:
+    #     print("fuck off")
+    #
+    # if "jona" == face:
+    #     print("hey master")
+    #     print("your name is Jonathan Zilca and are 20 years old.")
+    #     print("These days you work as a soldier.")

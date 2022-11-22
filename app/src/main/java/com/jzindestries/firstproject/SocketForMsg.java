@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 
-public class SocketForVideo {
+public class SocketForMsg {
 
 
     // server settings

@@ -1,13 +1,15 @@
 package com.jzindestries.firstproject;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
@@ -24,9 +26,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.core.graphics.drawable.DrawableCompat;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         String IP = sp.getString("ServerIP", "");
         if (IP.length() > 0 && Charset.forName("US-ASCII").newEncoder().canEncode(IP)) {
             SERVER_ADDRESS = IP;
-            SocketForVideo.Change_Ip(IP);
+            SocketForMsg.Change_Ip(IP);
         }
         editor = sp.edit();
         editor.clear();
@@ -103,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
         voiceAppear = AnimationUtils.loadAnimation(this,R.anim.voice_appear);
         voiceDisappear = AnimationUtils.loadAnimation(this,R.anim.voice_disapear);
 
-//        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-//            NotificationChannel channel = new NotificationChannel("my notification", "my notification", NotificationManager.IMPORTANCE_DEFAULT);
-//            NotificationManager manager = getSystemService(NotificationManager.class);
-//            manager.createNotificationChannel(channel);
-//        }
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
         // setting on ot off volume of live streaming
         liveStream.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,15 +129,16 @@ public class MainActivity extends AppCompatActivity {
         answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                // notification code starts here
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My notification");
-//                builder.setContentTitle("Door Protector");
-//                builder.setContentText("Come and check out what has changed!");
-//                builder.setAutoCancel(true);
-//
-//                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
-//                managerCompat.notify(1, builder.build());
-//                // notification code ends here
+                // notification code starts here
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My notification");
+                builder.setSmallIcon(R.drawable.answer_icon_24);
+                builder.setContentTitle("Intruder Alarm");
+                builder.setContentText("Click here to find out who's coming!");
+                builder.setAutoCancel(true);
+
+                NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
+                managerCompat.notify(1, builder.build());
+                // notification code ends here
                 animateFab();
 
             }
@@ -199,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 menuBuilder.setCallback(new MenuBuilder.Callback() {
                     @Override
                     public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
-                        SocketForVideo socketForVideo = new SocketForVideo();
+                        SocketForMsg socketForVideo = new SocketForMsg();
                         Toast.makeText(MainActivity.this, "Quick message sent!", Toast.LENGTH_SHORT).show();
                         switch (item.getItemId()){
                             case R.id.quickAnswer1:

@@ -2,16 +2,11 @@ package com.jzindestries.firstproject;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class WriteAndSend {
     EditText WritenText;
@@ -29,8 +24,8 @@ public class WriteAndSend {
             sending.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SocketForVideo socketForVideo = new SocketForVideo();
-                    socketForVideo.sendMessage(String.valueOf(WritenText.getText()));
+                    SocketForMsg socketForMsg = new SocketForMsg();
+                    socketForMsg.sendMessage(String.valueOf(WritenText.getText()));
                     Toast.makeText(activity, "Message sent!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
